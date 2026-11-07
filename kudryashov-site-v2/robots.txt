@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://kudryashov-al.github.io/sitemap.xml
