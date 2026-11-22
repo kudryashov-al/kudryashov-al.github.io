@@ -1,0 +1,5 @@
+@import url("site-navigation.css");
+
+.catalog-back{display:inline-block;margin-top:20px;color:#783b1e;font-size:.9rem;text-underline-offset:3px}
+.catalog-back + article .tags{margin-top:20px}
+article .meta + .btns{margin:16px 0 24px}
