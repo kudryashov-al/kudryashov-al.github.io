@@ -78,6 +78,7 @@ const slides = [...topics.querySelectorAll('.tmo')]
 const dots = [...topics.querySelectorAll('.tmd button')]
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')
 let currentTopic = 0
+let topicsVisible = true
 let topicTimer
 
 function showTopic(index) {
@@ -92,11 +93,11 @@ function showTopic(index) {
 
 function scheduleTopic() {
   clearTimeout(topicTimer)
-  if (document.hidden || reducedMotion.matches || topics.querySelector('.tmo a:focus')) return
+  if (!topicsVisible || document.hidden || reducedMotion.matches || topics.querySelector('.tmo a:focus')) return
   topicTimer = setTimeout(() => {
     showTopic((currentTopic + 1) % slides.length)
     scheduleTopic()
-  }, 6500)
+  }, 4000)
 }
 
 dots.forEach((dot, i) => dot.addEventListener('click', () => {
@@ -108,6 +109,14 @@ topics.addEventListener('focusout', () => queueMicrotask(scheduleTopic))
 document.addEventListener('visibilitychange', scheduleTopic)
 reducedMotion.addEventListener('change', scheduleTopic)
 showTopic(0)
+if ('IntersectionObserver' in window) {
+  topicsVisible = false
+  const topicObserver = new IntersectionObserver(([entry]) => {
+    topicsVisible = entry.isIntersecting
+    scheduleTopic()
+  }, {rootMargin: '0px 0px -10% 0px'})
+  topicObserver.observe(topics)
+}
 scheduleTopic()
 </script><!-- Yandex.Metrika counter -->
 <script type="text/javascript">
